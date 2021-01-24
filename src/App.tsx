@@ -26,44 +26,55 @@ function App() {
         let filteredTasks = tasks.filter(t => t.id !== id)
         setTasks(filteredTasks)
     }
-
 // Функция добавления тасок
-// Создает новый объект таски
+// Принимает title новой таски
 // Возвращает новый массив со старыми тасками и новой таской в начале
     function addTask(title: string) {
         let task = {id: v1(), title: title, isDone: true}
         let newTasks = [task, ...tasks]
         setTasks(newTasks)
     }
-
-    let [filter, setFilter] = useState<FilterValuesType>("all")
-
-    let tasksForTodoList = tasks
-
-    if (filter === "active") {
-        tasksForTodoList = tasks.filter(t => !t.isDone) //t.isDone === false
+// Функция изменения статуса тасок
+// Принимает id и isDone такски
+// Возвращает копию массива с измененным статусом
+    function changeStatus(id: string, isDone: boolean) {
+        let task = tasks.find(t => t.id === id)
+        if(task){
+            task.isDone = isDone
+            setTasks([...tasks])
+        }
     }
-    if (filter === "completed") {
-        tasksForTodoList = tasks.filter(t => t.isDone) //t.isDone === true
-    }
+
+        let [filter, setFilter] = useState<FilterValuesType>("all")
+
+        let tasksForTodoList = tasks
+
+        if (filter === "active") {
+            tasksForTodoList = tasks.filter(t => !t.isDone) //t.isDone === false
+        }
+        if (filter === "completed") {
+            tasksForTodoList = tasks.filter(t => t.isDone) //t.isDone === true
+        }
 
 // Функция вывода тасок по статусу
 // Принимает value статуса
 // Возвращает отфильтрованный список тасок по статусу
-    function changeFilter(value: FilterValuesType) {
-        setFilter(value)
+        function changeFilter(value: FilterValuesType) {
+            setFilter(value)
+        }
+
+        return (
+            <div className="App">
+                <Todolist title="What to learn"
+                          tasks={tasksForTodoList}
+                          removeTask={removeTask}
+                          changeFilter={changeFilter}
+                          addTask={addTask}
+                          changeTaskStatus={changeStatus}
+                          filter={filter}
+                />
+            </div>
+        );
     }
 
-    return (
-        <div className="App">
-            <Todolist title="What to learn"
-                      tasks={tasksForTodoList}
-                      removeTask={removeTask}
-                      changeFilter={changeFilter}
-                      addTask={addTask}
-            />
-        </div>
-    );
-}
-
-export default App;
+    export default App;
