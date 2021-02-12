@@ -11,7 +11,7 @@ export type TaskType = {
     title: string
     isDone: boolean
 }
-export type TaskStateType = {
+export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 export type FilterValuesType = "all" | "active" | "completed"
@@ -31,7 +31,7 @@ function App() {
         {id: todolistId2, title: "What to buy", filter: "all"}
     ])
 
-    let [tasks, setTasks] = useState<TaskStateType>({
+    let [tasks, setTasks] = useState<TasksStateType>({
         [todolistId1]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -42,15 +42,18 @@ function App() {
         ]
     })
 
-    //Добавляет задание
-    //Принимает title задания и id тудулиста
-    //Возвращает
+    // Добавляет задание
+    // Принимает title задания и id тудулиста
+    // Добавляет таску в начало тудулиста по заданному id
     function addTask(title: string, todolistId: string) {
         let task = {id: v1(), title: title, isDone: true}
         let todolistTasks = tasks[todolistId]
         tasks[todolistId] = [task, ...todolistTasks]
         setTasks({...tasks})
     }
+
+    // Изменяет статус таски
+    // Принимает id таски, статус выполнения, id тудулиста
     function changeStatus(id: string, isDone: boolean, todolistId: string) {
         let todolistTasks = tasks[todolistId]
         let task = todolistTasks.find(t => t.id === id)
@@ -59,6 +62,9 @@ function App() {
             setTasks({...tasks})
         }
     }
+
+    // Изменяет title таски
+    // Принимает id таски, id тудулиста
     function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
         let todolistTasks = tasks[todolistId]
         let task = todolistTasks.find(t => t.id === id)
@@ -67,6 +73,9 @@ function App() {
             setTasks({...tasks})
         }
     }
+
+    // Изменяет отображение тасок по статусу выполнения
+    // Принимает статус таски, id тудулиста
     function changeFilter(value: FilterValuesType, todolistId: string) {
         let todolist = todolists.find(tl => tl.id === todolistId)
         if (todolist) {
@@ -74,12 +83,17 @@ function App() {
             setTodolists([...todolists])
         }
     }
+
+    // Удаляет таску
+    // Принимает id таски, id тудулиста
     function removeTask(id: string, todolistId: string) {
         let todolistTasks = tasks[todolistId]
         tasks[todolistId] = todolistTasks.filter(t => t.id !== id)
         setTasks({...tasks})
     }
 
+    // Добовляет тудулист
+    // Принимает title тудулиста
     function addTodolist(title: string) {
         //Присваиваем тудулисту id
         let newTodolistId = v1()
@@ -92,6 +106,9 @@ function App() {
             [newTodolistId]: []
         })
     }
+
+    // Изменяет title тудулист
+    // Принимает id и измененный title тудулиста
     function changeTodolistTitle(id: string, newTitle: string) {
         //Ищем нужный тудулист
         let todolist = todolists.find(tl => tl.id === id)
@@ -102,6 +119,9 @@ function App() {
             setTodolists([...todolists])
         }
     }
+
+    // Удаляет тудулист
+    // Принимает id тудулиста
     function removeTodolist(todolistId: string) {
         //Добавим в стейт список тудулистов, id которых не равны удаляемому
         setTodolists(todolists.filter(tl => tl.id !== todolistId))
@@ -110,12 +130,6 @@ function App() {
         //Сетаем в стэйт копию объекта, чтобы React перерисовал
         setTasks({...tasks})
     }
-
-
-
-
-
-
 
 
     return (
