@@ -42,79 +42,41 @@ function App() {
         ]
     })
 
-    function removeTask(id: string, todolistId: string) {
-        //Достаем нужный массив по todolistId
-        let todolistTasks = tasks[todolistId]
-        //Перезаписываем в этом объекте массив для нужного тудулиста отфильтрованным массивом
-        tasks[todolistId] = todolistTasks.filter(t => t.id !== id)
-        //Сетаем в стэйт копию объекта, чтобы React перерисовал
-        setTasks({...tasks})
-    }
-
+    //Добавляет задание
+    //Принимает title задания и id тудулиста
+    //Возвращает
     function addTask(title: string, todolistId: string) {
-        //Создаем новую таску
         let task = {id: v1(), title: title, isDone: true}
         let todolistTasks = tasks[todolistId]
-        //Созаем новый массив таксок, добавив в начало новую таску
         tasks[todolistId] = [task, ...todolistTasks]
-        //Сетаем в стэйт копию объекта, чтобы React перерисовал
         setTasks({...tasks})
     }
-
     function changeStatus(id: string, isDone: boolean, todolistId: string) {
-        //Достаем нужный массив по todolistId
         let todolistTasks = tasks[todolistId]
-        //Ищем нужную таску
         let task = todolistTasks.find(t => t.id === id)
-        //Изменяем таску, если нашли
         if (task) {
             task.isDone = isDone
-            //Сетаем в стэйт копию объекта, чтобы React перерисовал
             setTasks({...tasks})
         }
     }
-
     function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
-        //Достаем нужный массив по todolistId
         let todolistTasks = tasks[todolistId]
-        //Ищем нужную таску
         let task = todolistTasks.find(t => t.id === id)
-        //Изменяем таску, если нашли
         if (task) {
             task.title = newTitle
-            //Сетаем в стэйт копию объекта, чтобы React перерисовал
             setTasks({...tasks})
         }
     }
-
-    function changeTodolistTitle(id: string, newTitle: string) {
-        //Ищем нужный тудулист
-        let todolist = todolists.find(tl => tl.id === id)
-        //Изменяем title, если нашли
-        if (todolist) {
-            todolist.title = newTitle
-            //Сетаем в стэйт копию массива, чтобы React перерисовал
-            setTodolists([...todolists])
-        }
-    }
-
     function changeFilter(value: FilterValuesType, todolistId: string) {
-        //Ищем тудулист в котором нужно поменять значение фильтра
         let todolist = todolists.find(tl => tl.id === todolistId)
-        //Изменяем фильтр, если нашли
         if (todolist) {
             todolist.filter = value
-            //Сетаем в стэйт копию массива, чтобы React перерисовал
             setTodolists([...todolists])
         }
     }
-
-    function removeTodolist(todolistId: string) {
-        //Добавим в стейт список тудулистов, id которых не равны удаляемому
-        setTodolists(todolists.filter(tl => tl.id !== todolistId))
-        //Удалим таски у удаляемого тудулиста из стейта где храним таски
-        delete tasks[todolistId] //удаляем св-во объекта (массив тасок)
-        //Сетаем в стэйт копию объекта, чтобы React перерисовал
+    function removeTask(id: string, todolistId: string) {
+        let todolistTasks = tasks[todolistId]
+        tasks[todolistId] = todolistTasks.filter(t => t.id !== id)
         setTasks({...tasks})
     }
 
@@ -130,6 +92,31 @@ function App() {
             [newTodolistId]: []
         })
     }
+    function changeTodolistTitle(id: string, newTitle: string) {
+        //Ищем нужный тудулист
+        let todolist = todolists.find(tl => tl.id === id)
+        //Изменяем title, если нашли
+        if (todolist) {
+            todolist.title = newTitle
+            //Сетаем в стэйт копию массива, чтобы React перерисовал
+            setTodolists([...todolists])
+        }
+    }
+    function removeTodolist(todolistId: string) {
+        //Добавим в стейт список тудулистов, id которых не равны удаляемому
+        setTodolists(todolists.filter(tl => tl.id !== todolistId))
+        //Удалим таски у удаляемого тудулиста из стейта где храним таски
+        delete tasks[todolistId] //удаляем св-во объекта (массив тасок)
+        //Сетаем в стэйт копию объекта, чтобы React перерисовал
+        setTasks({...tasks})
+    }
+
+
+
+
+
+
+
 
     return (
         <div className="App">
