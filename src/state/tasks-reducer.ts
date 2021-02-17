@@ -1,12 +1,11 @@
-import {TasksStateType} from "../App"
+import {TasksStateType, TodolistType} from "../App"
 import {v1} from "uuid";
+import {AddTodolistActionType, RemoveTodolistActionType, todolistId1, todolistId2} from "./todolists-reducer";
 
 export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
 export type AddTaskActionType = ReturnType<typeof addTaskAC>
 export type ChangeTaskStatusActionType = ReturnType<typeof changeTaskStatusAC>
 export type ChangeTaskTitleActionType = ReturnType<typeof changeTaskTitleAC>
-export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
-export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
 
 type ActionsType = RemoveTaskActionType
     | AddTaskActionType
@@ -15,7 +14,19 @@ type ActionsType = RemoveTaskActionType
     | AddTodolistActionType
     | RemoveTodolistActionType
 
-export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksStateType => {
+const initialState: TasksStateType =
+    {
+        [todolistId1]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+        ],
+        [todolistId2]: [
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: false}
+        ]
+    }
+
+export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
             const stateCopy = {...state}
@@ -61,7 +72,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksS
             return stateCopy;
         }
         default:
-            throw new Error("I don't understand this type")
+            return state;
     }
 }
 
@@ -88,12 +99,4 @@ export const changeTaskTitleAC = (taskId: string, newTitle: string, todolistId: 
     newTitle,
     todolistId,
     taskId
-}) as const
-export const addTodolistAC = (todolistId: string) => ({
-    type: 'ADD-TODOLIST',
-    todolistId
-}) as const
-export const removeTodolistAC = (todolistId: string) => ({
-    type: 'REMOVE-TODOLIST',
-    todolistId
 }) as const
