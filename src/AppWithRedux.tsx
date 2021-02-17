@@ -1,4 +1,4 @@
-import React, {useReducer} from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from "uuid";
@@ -8,16 +8,10 @@ import {Menu} from '@material-ui/icons';
 import {
     addTodolistAC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC, removeTodolistAC,
-    todolistsReducer
+    changeTodolistTitleAC,
+    removeTodolistAC
 } from "./state/todolists-reducer";
-import {
-    addTaskAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
-    removeTaskAC,
-    tasksReducer
-} from "./state/tasks-reducer";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 
@@ -38,6 +32,8 @@ export type TodolistType = {
 }
 
 function AppWithRedux() {
+    console.log("App is called")
+
     let todolistId1 = v1()
     let todolistId2 = v1()
 
@@ -48,52 +44,52 @@ function AppWithRedux() {
     // Добавляет задание
     // Принимает title задания и id тудулиста
     // Добавляет таску в начало тудулиста по заданному id
-    function addTask(title: string, todolistId: string) {
+    const addTask = useCallback((title: string, todolistId: string) => {
         dispatch(addTaskAC(title, todolistId))
-    }
+    }, [dispatch])
 
     // Изменяет статус таски
     // Принимает id таски, статус выполнения, id тудулиста
-    function changeStatus(id: string, isDone: boolean, todolistId: string) {
+    const changeStatus = useCallback((id: string, isDone: boolean, todolistId: string) => {
         dispatch(changeTaskStatusAC(id, isDone, todolistId))
-    }
+    }, [dispatch])
 
     // Изменяет title таски
     // Принимает id таски, newTitle задания, id тудулиста
-    function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
+    const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
         dispatch(changeTaskTitleAC(id, newTitle, todolistId))
-    }
+    }, [dispatch])
 
     // Изменяет отображение тасок по статусу выполнения
     // Принимает статус таски, id тудулиста
-    function changeFilter(value: FilterValuesType, todolistId: string) {
+    const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
         dispatch(changeTodolistFilterAC(value, todolistId))
-    }
+    }, [dispatch])
 
     // Удаляет таску
     // Принимает id таски, id тудулиста
-    function removeTask(id: string, todolistId: string) {
+    const removeTask = useCallback((id: string, todolistId: string) => {
         dispatch(removeTaskAC(id, todolistId))
-    }
+    }, [dispatch])
 
     // Добовляет тудулист
     // Принимает title тудулиста
-    function addTodolist(title: string) {
+    const addTodolist = useCallback((title: string) => {
         const action = addTodolistAC(title)
         dispatch(action)
-    }
+    }, [dispatch])
 
     // Изменяет title тудулист
     // Принимает id и измененный title тудулиста
-    function changeTodolistTitle(id: string, newTitle: string) {
+    const changeTodolistTitle = useCallback((id: string, newTitle: string) => {
         dispatch(changeTodolistTitleAC(id, newTitle))
-    }
+    }, [dispatch])
 
     // Удаляет тудулист
     // Принимает id тудулиста
-    function removeTodolist(todolistId: string) {
+    const removeTodolist = useCallback((todolistId: string) => {
         dispatch(removeTodolistAC(todolistId))
-    }
+    }, [dispatch])
 
     return (
         <div className="App">
@@ -118,12 +114,6 @@ function AppWithRedux() {
                             let allTodolistTasks = tasks[tl.id]
                             let tasksForTodoList = allTodolistTasks
 
-                            if (tl.filter === "active") {
-                                tasksForTodoList = allTodolistTasks.filter(t => !t.isDone) //t.isDone === false
-                            }
-                            if (tl.filter === "completed") {
-                                tasksForTodoList = allTodolistTasks.filter(t => t.isDone) //t.isDone === true
-                            }
                             return <Grid item>
                                 <Paper elevation={10} style={{padding: "15px", borderRadius: "10px"}}>
                                     <Todolist
