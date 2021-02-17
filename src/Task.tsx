@@ -4,7 +4,7 @@ import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {TaskType} from "./App";
 
-type TaskPropsType = {
+export type TaskPropsType = {
     removeTask: (taskId: string, todolistId: string) => void
     changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
     changeTaskTitle: (id: string, newTitle: string, todolistId: string) => void
