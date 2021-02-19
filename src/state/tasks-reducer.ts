@@ -1,6 +1,8 @@
-import {TasksStateType, TodolistType} from "../App"
+// import {TasksStateType} from "../App"
 import {v1} from "uuid";
 import {AddTodolistActionType, RemoveTodolistActionType, todolistId1, todolistId2} from "./todolists-reducer";
+import {TasksStateType} from "../AppWithRedux";
+import {TaskPriorities, TaskStatuses, TaskType} from "../api/tasks-api";
 
 export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
 export type AddTaskActionType = ReturnType<typeof addTaskAC>
@@ -17,12 +19,24 @@ type ActionsType = RemoveTaskActionType
 const initialState: TasksStateType =
     {
         [todolistId1]: [
-            {id: v1(), title: "HTML&CSS", isDone: true},
-            {id: v1(), title: "JS", isDone: true},
-        ],
-        [todolistId2]: [
-            {id: v1(), title: "JS", isDone: true},
-            {id: v1(), title: "ReactJS", isDone: false}
+                {
+                    id: v1(), title: "HTML&CSS", status: TaskStatuses.Completed, todoListId: todolistId1, description: "",
+                    startDate: "", deadline: "", addedDate: "", order: 0, priority: TaskPriorities.Low
+                },
+                {
+                    id: v1(), title: "JS", status: TaskStatuses.Completed, todoListId: todolistId1, description: "",
+                    startDate: "", deadline: "", addedDate: "", order: 0, priority: TaskPriorities.Low
+                },
+            ],
+            [todolistId2]: [
+                {
+                    id: v1(), title: "JS", status: TaskStatuses.Completed, todoListId: todolistId2, description: "",
+                    startDate: "", deadline: "", addedDate: "", order: 0, priority: TaskPriorities.Low
+                },
+                {
+                    id: v1(), title: "ReactJS", status: TaskStatuses.Completed, todoListId: todolistId2, description: "",
+                    startDate: "", deadline: "", addedDate: "", order: 0, priority: TaskPriorities.Low
+                }
         ]
     }
 
@@ -31,23 +45,28 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case 'REMOVE-TASK': {
             const stateCopy = {...state}
             const tasks = state[action.todolistId]
-            const filteredTasks = tasks.filter(tl => tl.id !== action.taskId)
-            stateCopy[action.todolistId] = filteredTasks
+            stateCopy[action.todolistId] = tasks.filter(tl => tl.id !== action.taskId)
             return stateCopy
         }
         case 'ADD-TASK': {
             const stateCopy = {...state}
             const tasks = stateCopy[action.todolistId]
-            const newTask = {id: v1(), title: action.title, isDone: false}
-            const newTasks = [newTask, ...tasks]
-            stateCopy[action.todolistId] = newTasks
+            const newTask: TaskType = {
+                id: v1(),
+                title: action.title,
+                status: TaskStatuses.New,
+                todoListId: action.todolistId, description: "",
+                startDate: "", deadline: "", addedDate: "", order: 0, priority: TaskPriorities.Low
+            }
+            // const newTasks = [newTask, ...tasks]
+            stateCopy[action.todolistId] = [newTask, ...tasks]
             return stateCopy
         }
         case 'CHANGE-TASK-STATUS': {
             const todolistTasks = state[action.todolistId]
             state[action.todolistId] = todolistTasks
                 .map(t => t.id === action.id
-                    ? {...t, isDone: action.isDone}
+                    ? {...t, status: action.status}
                     : t)
             return ({...state})
         }
@@ -86,10 +105,10 @@ export const addTaskAC = (title: string, todolistId: string) => ({
     title,
     todolistId
 }) as const
-export const changeTaskStatusAC = (id: string, isDone: boolean, todolistId: string) => ({
+export const changeTaskStatusAC = (id: string, status: TaskStatuses, todolistId: string) => ({
     type: 'CHANGE-TASK-STATUS',
     id,
-    isDone,
+    status,
     todolistId
 }) as const
 export const changeTaskTitleAC = (taskId: string, newTitle: string, todolistId: string) => ({
