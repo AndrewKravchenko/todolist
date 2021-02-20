@@ -6,8 +6,8 @@ import {
     tasksReducer
 } from './tasks-reducer';
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "./todolists-reducer";
-import {TasksStateType} from "../AppWithRedux";
-import {TaskPriorities, TaskStatuses} from "../api/tasks-api";
+import {TasksStateType} from "../../app/AppWithRedux";
+import {TaskPriorities, TaskStatuses} from "../../api/tasks-api";
 
 let startState: TasksStateType
 
@@ -150,7 +150,7 @@ test('empty arrays should be added when we set todolists', () => {
     const endState = tasksReducer({}, action)
 
     const keys = Object.keys(endState)
- 
+
     expect(keys.length).toBe(2);
     expect(endState["1"]).toStrictEqual([])
     expect(endState["2"]).toStrictEqual([])

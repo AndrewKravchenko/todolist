@@ -9,7 +9,7 @@ import {
     TodolistDomainType,
     todolistsReducer
 } from './todolists-reducer';
-import {TodolistType} from "../api/todolist-api";
+import {TodolistType} from "../../api/todolist-api";
 
 let todolistId1: string
 let todolistId2: string

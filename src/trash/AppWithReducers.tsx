@@ -1,7 +1,7 @@
 import React, {useReducer} from 'react';
-import './App.css';
+import '../app/App.css';
 import {v1} from "uuid";
-import {AddItemForm} from "./AddItemForm";
+import {AddItemForm} from "../components/AddItemForm/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {
@@ -11,10 +11,10 @@ import {
     FilterValuesType,
     removeTodolistAC,
     todolistsReducer
-} from "./state/todolists-reducer";
-import {addTaskAC, updateTaskAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
-import Todolist from "./Todolist";
-import {TaskPriorities, TaskStatuses} from "./api/tasks-api";
+} from "../features/Todolists/todolists-reducer";
+import {addTaskAC, updateTaskAC, removeTaskAC, tasksReducer} from "../features/Todolists/tasks-reducer";
+import Todolist from "../features/Todolists/Todolist/Todolist";
+import {TaskPriorities, TaskStatuses} from "../api/tasks-api";
 
 function AppWithReducers() {
     let todolistId1 = v1()

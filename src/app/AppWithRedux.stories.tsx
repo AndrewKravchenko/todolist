@@ -1,7 +1,7 @@
 import React from 'react';
 import {Meta, Story} from '@storybook/react/types-6-0';
-import AppWithRedux from "../AppWithRedux";
-import {ReduxStoreProviderDecorator} from "./decorators/ReduxStoreProviderDecorator";
+import AppWithRedux from "./AppWithRedux";
+import {ReduxStoreProviderDecorator} from "../stories/decorators/ReduxStoreProviderDecorator";
 
 export default {
     title: 'Todolists/AppWithRedux',

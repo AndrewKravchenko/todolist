@@ -1,14 +1,14 @@
 import React, {useMemo, useState} from 'react'
-import './App.css';
+import '../app/App.css';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {v1} from "uuid";
 import {Menu} from '@material-ui/icons';
-import Todolist from "./Todolist";
-import {TodolistType} from "./api/todolist-api";
-import {TasksStateType} from "./AppWithRedux";
-import {TaskPriorities, TaskStatuses} from "./api/tasks-api";
-import {FilterValuesType, TodolistDomainType} from "./state/todolists-reducer";
-import {AddItemForm} from "./AddItemForm";
+import Todolist from "../features/Todolists/Todolist/Todolist";
+import {TodolistType} from "../api/todolist-api";
+import {TasksStateType} from "../app/AppWithRedux";
+import {TaskPriorities, TaskStatuses} from "../api/tasks-api";
+import {FilterValuesType, TodolistDomainType} from "../features/Todolists/todolists-reducer";
+import {AddItemForm} from "../components/AddItemForm/AddItemForm";
 
 
 function App() {
