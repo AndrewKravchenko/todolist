@@ -1,15 +1,18 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
 import {
-    addTodolistAC,
+    addTodolistTC,
     changeTodolistFilterAC,
-    changeTodolistTitleAC, FilterValuesType,
-    removeTodolistAC, TodolistDomainType
+    changeTodolistTC,
+    fetchTodolistsTC,
+    FilterValuesType,
+    removeTodolistTC,
+    TodolistDomainType
 } from "./state/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
+import {addTaskTC, deleteTasksTC, updateTaskTC} from "./state/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import Todolist from "./Todolist";
@@ -24,25 +27,29 @@ const AppWithRedux = React.memo(() => {
 
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTodolistsTC())
+    }, [])
 
     // Добавляет задание
     // Принимает title задания и id тудулиста
     // Добавляет таску в начало тудулиста по заданному id
     const addTask = useCallback((title: string, todolistId: string) => {
-        dispatch(addTaskAC(title, todolistId))
+        dispatch(addTaskTC(title, todolistId))
     }, [dispatch])
 
     // Изменяет статус таски
     // Принимает id таски, статус выполнения, id тудулиста
     const changeStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
-        dispatch(changeTaskStatusAC(id, status, todolistId))
+        dispatch(updateTaskTC(id, {status}, todolistId))
     }, [dispatch])
 
     // Изменяет title таски
     // Принимает id таски, newTitle задания, id тудулиста
     const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
-        dispatch(changeTaskTitleAC(id, newTitle, todolistId))
+        dispatch(updateTaskTC(id, {title: newTitle}, todolistId))
     }, [dispatch])
 
     // Изменяет отображение тасок по статусу выполнения
@@ -54,26 +61,25 @@ const AppWithRedux = React.memo(() => {
     // Удаляет таску
     // Принимает id таски, id тудулиста
     const removeTask = useCallback((id: string, todolistId: string) => {
-        dispatch(removeTaskAC(id, todolistId))
+        dispatch(deleteTasksTC(id, todolistId))
     }, [dispatch])
 
     // Добовляет тудулист
     // Принимает title тудулиста
     const addTodolist = useCallback((title: string) => {
-        const action = addTodolistAC(title)
-        dispatch(action)
+        dispatch(addTodolistTC(title))
     }, [dispatch])
 
     // Изменяет title тудулист
     // Принимает id и измененный title тудулиста
     const changeTodolistTitle = useCallback((id: string, newTitle: string) => {
-        dispatch(changeTodolistTitleAC(id, newTitle))
+        dispatch(changeTodolistTC(id, newTitle))
     }, [dispatch])
 
     // Удаляет тудулист
     // Принимает id тудулиста
     const removeTodolist = useCallback((todolistId: string) => {
-        dispatch(removeTodolistAC(todolistId))
+        dispatch(removeTodolistTC(todolistId))
     }, [dispatch])
 
     return (

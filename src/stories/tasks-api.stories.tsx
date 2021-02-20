@@ -54,13 +54,13 @@ export const CreateTasks = () => {
     return <div> {JSON.stringify(state)}</div>
 }
 
-export const UpdateTasksTitle = () => {
+export const updateTaskTitle = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
 
         const todolistId = "6e74d942-3817-4246-959e-de7111ef8e1c"
         const taskId = "fbfc87fb-497d-44a6-8a09-20e2dc906170"
-        tasksAPI.updateTasks(todolistId, taskId, {
+        tasksAPI.updateTask(todolistId, taskId, {
             description: "description 100",
             title: "title 100",
             status: 2,

@@ -12,10 +12,9 @@ import {
     removeTodolistAC,
     todolistsReducer
 } from "./state/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
+import {addTaskAC, updateTaskAC, removeTaskAC, tasksReducer} from "./state/tasks-reducer";
 import Todolist from "./Todolist";
 import {TaskPriorities, TaskStatuses} from "./api/tasks-api";
-
 
 function AppWithReducers() {
     let todolistId1 = v1()
@@ -53,19 +52,30 @@ function AppWithReducers() {
     // Принимает title задания и id тудулиста
     // Добавляет таску в начало тудулиста по заданному id
     function addTask(title: string, todolistId: string) {
-        dispatchToTasks(addTaskAC(title, todolistId))
+        dispatchToTasks(addTaskAC({
+            title,
+            todoListId: todolistId,
+            status: TaskStatuses.New,
+            addedDate: "",
+            deadline: "",
+            description: "",
+            order: 0,
+            priority: 0,
+            startDate: "",
+            id: "id exists"
+        }))
     }
 
     // Изменяет статус таски
     // Принимает id таски, статус выполнения, id тудулиста
     function changeStatus(id: string, status: TaskStatuses, todolistId: string) {
-        dispatchToTasks(changeTaskStatusAC(id, status, todolistId))
+        dispatchToTasks(updateTaskAC(id, {status}, todolistId))
     }
 
     // Изменяет title таски
     // Принимает id таски, newTitle задания, id тудулиста
     function changeTaskTitle(id: string, newTitle: string, todolistId: string) {
-        dispatchToTasks(changeTaskTitleAC(id, newTitle, todolistId))
+        dispatchToTasks(updateTaskAC(id, {title: newTitle}, todolistId))
     }
 
     // Изменяет отображение тасок по статусу выполнения
@@ -83,7 +93,12 @@ function AppWithReducers() {
     // Добовляет тудулист
     // Принимает title тудулиста
     function addTodolist(title: string) {
-        const action = addTodolistAC(title)
+        const action = addTodolistAC({
+            id: v1(),
+            addedDate: "",
+            order: 0,
+            title
+        })
         dispatchToTasks(action)
         dispatchToTodolists(action)
     }
