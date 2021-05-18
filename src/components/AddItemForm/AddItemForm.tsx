@@ -1,15 +1,16 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {IconButton, TextField} from "@material-ui/core";
-import {AddBox} from "@material-ui/icons";
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
+import {IconButton, TextField} from '@material-ui/core'
+import {AddBox} from '@material-ui/icons'
 
 export type AddItemFormPropsType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
-    console.log("AddItemForm is called")
+    console.log('AddItemForm is called')
 
-    let [title, setTitle] = useState("")
+    let [title, setTitle] = useState('')
     let [error, setError] = useState<string | null>(null)
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,16 +20,16 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
         if (error !== null) {
             setError(null)
         }
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
             addItem()
         }
     }
     const addItem = () => {
-        if (title.trim() !== "") {
+        if (title.trim() !== '') {
             props.addItem(title.trim())
-            setTitle("")
+            setTitle('')
         } else {
-            setError("Title is required")
+            setError('Title is required')
         }
     }
     return <div>
@@ -39,9 +40,10 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
                    onKeyPress={onKeyPressHandler}
                    label="Title"
                    helperText={error}
+                   disabled={props.disabled}
         />
-        <IconButton color="primary" onClick={addItem}>
-            <AddBox />
+        <IconButton color="primary" onClick={addItem} disabled={props.disabled}>
+            <AddBox/>
         </IconButton>
     </div>
 })

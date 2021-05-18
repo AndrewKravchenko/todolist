@@ -1,4 +1,4 @@
-import {instance} from "./todolist-api";
+import {instance} from './todolist-api'
 
 
 // api

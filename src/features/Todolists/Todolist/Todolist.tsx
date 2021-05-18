@@ -1,13 +1,14 @@
-import React, {useCallback, useEffect} from 'react';
-import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
-import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
-import {Button, IconButton} from "@material-ui/core";
-import {Delete} from "@material-ui/icons";
-import {Task} from "./Task/Task";
-import {TaskStatuses, TaskType} from "../../../api/tasks-api";
-import {FilterValuesType} from "../todolists-reducer";
-import {useDispatch} from "react-redux";
-import {fetchTasksTC} from "../tasks-reducer";
+import React, {useCallback, useEffect} from 'react'
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm'
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan'
+import {Button, IconButton} from '@material-ui/core'
+import {Delete} from '@material-ui/icons'
+import {Task} from './Task/Task'
+import {TaskStatuses, TaskType} from '../../../api/tasks-api'
+import {FilterValuesType} from '../todolists-reducer'
+import {useDispatch} from 'react-redux'
+import {fetchTasksTC} from '../tasks-reducer'
+import {RequestStatusType} from '../../../app/app-reducer'
 
 type TodolistType = {
     id: string
@@ -21,16 +22,22 @@ type TodolistType = {
     changeTaskTitle: (id: string, newTitle: string, todolistId: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
+    entityStatus: RequestStatusType
+    demo?: boolean
 }
 
 
-const Todolist = React.memo((props: TodolistType) => {
+const Todolist = React.memo(({demo = false, ...props}: TodolistType) => {
     console.log('Todolist is called')
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(fetchTasksTC(props.id))
+        if (!demo) {
+            dispatch(fetchTasksTC(props.id))
+        } else {
+            return
+        }
     }, [])
 
     const {
@@ -42,31 +49,32 @@ const Todolist = React.memo((props: TodolistType) => {
     const addTask = useCallback((title: string) => addTaskFromProps(title, id), [addTaskFromProps, id])
 
     const onAllClickHandler = useCallback(() => {
-        changeFilter("all", id)
+        changeFilter('all', id)
     }, [changeFilter, id])
     const onActiveClickHandler = useCallback(() => {
-        changeFilter("active", id)
+        changeFilter('active', id)
     }, [changeFilter, id])
     const onCompletedClickHandler = useCallback(() => {
-        changeFilter("completed", id)
+        changeFilter('completed', id)
     }, [changeFilter, id])
 
     let tasksForTodoList = props.tasks
 
-    if (props.filter === "active") {
+    if (props.filter === 'active') {
         tasksForTodoList = props.tasks.filter(t => t.status === TaskStatuses.New)
     }
-    if (props.filter === "completed") {
+    if (props.filter === 'completed') {
         tasksForTodoList = props.tasks.filter(t => t.status === TaskStatuses.Completed)
     }
     return <div>
         <h3>
-            <EditableSpan title={props.title} onChange={changeTodolistTitle}/>
-            <IconButton onClick={removeTodolist}>
+            <EditableSpan title={props.title} onChange={changeTodolistTitle}
+                          disabled={props.entityStatus === 'loading'}/>
+            <IconButton onClick={removeTodolist} disabled={props.entityStatus === 'loading'}>
                 <Delete/>
             </IconButton>
         </h3>
-        <AddItemForm addItem={addTask}/>
+        <AddItemForm addItem={addTask} disabled={props.entityStatus === 'loading'}/>
         <div>
             {
                 tasksForTodoList.map(t => <Task
@@ -76,10 +84,11 @@ const Todolist = React.memo((props: TodolistType) => {
                     removeTask={props.removeTask}
                     todolistId={props.id}
                     key={t.id}
+                    entityStatus={props.entityStatus}
                 />)
             }
         </div>
-        <div style={{paddingTop: "10px"}}>
+        <div style={{paddingTop: '10px'}}>
             <Button variant={props.filter === 'all' ? 'outlined' : 'text'}
                     onClick={onAllClickHandler}
                     color={'default'}

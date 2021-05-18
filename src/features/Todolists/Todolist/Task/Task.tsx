@@ -3,6 +3,7 @@ import {Checkbox, IconButton} from "@material-ui/core";
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {TaskStatuses, TaskType} from "../../../../api/tasks-api";
+import {RequestStatusType} from '../../../../app/app-reducer'
 
 export type TaskPropsType = {
     removeTask: (taskId: string, todolistId: string) => void
@@ -10,6 +11,7 @@ export type TaskPropsType = {
     changeTaskTitle: (id: string, newTitle: string, todolistId: string) => void
     task: TaskType
     todolistId: string
+    entityStatus: RequestStatusType
 }
 export const Task = React.memo((props: TaskPropsType) => {
 
@@ -33,8 +35,9 @@ export const Task = React.memo((props: TaskPropsType) => {
         />
         <EditableSpan title={task.title}
                       onChange={onChangeTitleHandler}
+                      disabled={props.entityStatus === 'loading'}
         />
-        <IconButton onClick={onClickHandler}>
+        <IconButton onClick={onClickHandler} disabled={props.entityStatus === 'loading'}>
             <Delete/>
         </IconButton>
     </div>
