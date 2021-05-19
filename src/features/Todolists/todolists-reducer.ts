@@ -73,6 +73,9 @@ export const fetchTodolistsTC = () => (dispatch: Dispatch<ActionsType>) => {
             dispatch(setTodolistsAC(res.data))
             dispatch(setAppStatusAC('succeeded'))
         })
+        .catch(error => {
+            handleServerNetworkError(error, dispatch);
+        })
 }
 export const removeTodolistTC = (todolistId: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))

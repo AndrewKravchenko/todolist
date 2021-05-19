@@ -88,6 +88,9 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsT
             dispatch(setTasksAC(tasks, todolistId))
             dispatch(setAppStatusAC('succeeded'))
         })
+        .catch(error => {
+            handleServerNetworkError(error, dispatch);
+        })
 }
 export const deleteTasksTC = (taskId: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))

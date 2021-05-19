@@ -34,7 +34,14 @@ const initialGlobalState: AppRootStateType = {
                 startDate: "", deadline: "", addedDate: "", order: 0, priority: TaskPriorities.Low}
         ]
     },
-    app: {status:"idle", error: null}
+    app: {
+        error: null,
+        status: 'idle',
+        isInitialized: false
+    },
+    auth: {
+        isLoggedIn: false
+    }
 };
 
 export const storyBookStore = createStore(rootReducer, initialGlobalState as AppRootStateType, applyMiddleware(thunk));
