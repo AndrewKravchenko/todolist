@@ -1,23 +1,23 @@
-import React, {useEffect, useCallback} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import './App.css'
 import {
     AppBar,
     Button,
+    CircularProgress,
     Container,
     IconButton,
-    Toolbar,
-    Typography,
     LinearProgress,
-    CircularProgress
+    Toolbar,
+    Typography
 } from '@material-ui/core'
 import {Menu} from '@material-ui/icons'
 import {TaskType} from '../api/tasks-api'
 import {TodolistsList} from '../features/Todolists/TodolistsList'
-import {useSelector, useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from './store'
-import {RequestStatusType, initializeAppTC} from './app-reducer'
+import {initializeAppTC, RequestStatusType} from './app-reducer'
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
-import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
+import {HashRouter, Redirect, Route, Switch} from 'react-router-dom'
 import {Login} from '../features/Login/Login'
 import {logoutTC} from '../features/Login/auth-reducer'
 
@@ -50,7 +50,7 @@ const App = React.memo(({demo = false}: PropsType) => {
     }
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <div className="App">
                 <AppBar position="static">
                     <Toolbar>
@@ -76,11 +76,8 @@ const App = React.memo(({demo = false}: PropsType) => {
                 </Container>
                 <ErrorSnackbar/>
             </div>
-        </BrowserRouter>
+        </HashRouter>
     )
 })
 
-
 export default App
-
-

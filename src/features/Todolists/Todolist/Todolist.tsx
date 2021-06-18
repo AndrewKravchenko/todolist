@@ -28,7 +28,6 @@ type TodolistType = {
 
 
 const Todolist = React.memo(({demo = false, ...props}: TodolistType) => {
-    console.log('Todolist is called')
 
     const dispatch = useDispatch()
 
