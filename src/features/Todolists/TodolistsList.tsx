@@ -11,7 +11,7 @@ import {
     TodolistDomainType
 } from './todolists-reducer'
 import {addTaskTC, deleteTasksTC, updateTaskTC} from './tasks-reducer'
-import {TaskStatuses, TaskType} from '../../api/tasks-api'
+import {TaskStatuses} from '../../api/tasks-api'
 import {Grid, Paper} from '@material-ui/core'
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
 import Todolist from './Todolist/Todolist'
@@ -51,7 +51,7 @@ export const TodolistsList: React.FC<TodolistsListType> = ({demo = false}) => {
     }, [dispatch])
 
     const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
-        dispatch(changeTodolistFilterAC(value, todolistId))
+        dispatch(changeTodolistFilterAC({filter: value, todolistId}))
     }, [dispatch])
 
     const removeTask = useCallback((id: string, todolistId: string) => {

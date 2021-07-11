@@ -107,5 +107,4 @@ const Todolist = React.memo(({demo = false, ...props}: TodolistType) => {
     </div>
 })
 
-
 export default Todolist
