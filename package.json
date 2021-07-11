@@ -15,7 +15,7 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.16",
-    "@types/react-router-dom": "^5.1.7",
+    "@types/react-router-dom": "^5.1.8",
     "@types/uuid": "^8.3.0",
     "axios": "^0.21.1",
     "formik": "^2.2.6",
@@ -27,7 +27,8 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "typescript": "^4.3.5",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "webpack": "4.42.0"
   },
   "homepage": "https://andrewkravchenko.github.io/todolist/",
   "scripts": {
@@ -35,8 +36,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 9009",
-    "build-storybook": "build-storybook",
+    "storybook": "start-storybook -p 9009 -s public --no-dll",
+    "build-storybook": "build-storybook -s public",
     "jest:integration": "jest -c integration/jest.config.js",
     "test:integration": "start-server-and-test storybook http-get://localhost:9009 jest:integration",
     "predeploy": "npm run build",
@@ -64,10 +65,12 @@
     "@storybook/node-logger": "^6.1.18",
     "@storybook/preset-create-react-app": "^3.1.6",
     "@storybook/react": "^6.1.18",
+    "@types/storybook-react-router": "^1.0.1",
     "gh-pages": "^3.2.1",
     "jest-image-snapshot": "^4.3.0",
     "jest-puppeteer": "^4.4.0",
     "puppeteer": "^7.1.0",
-    "start-server-and-test": "^1.12.0"
+    "start-server-and-test": "^1.12.0",
+    "storybook-react-router": "^1.0.8"
   }
 }
